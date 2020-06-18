@@ -17,6 +17,7 @@ package basic;
 import swim.api.SwimLane;
 import swim.api.agent.AbstractAgent;
 import swim.api.lane.CommandLane;
+import swim.api.lane.MapLane;
 import swim.api.lane.ValueLane;
 import java.time.ZonedDateTime;
 
@@ -29,6 +30,15 @@ public class UnitAgent extends AbstractAgent {
   @SwimLane("publishInfo")
   CommandLane<String> publishInfo = this.<String>commandLane()
       .onCommand(msg -> this.info.set("from publishInfo: " + msg));
+
+  @SwimLane("shoppingCart")
+  MapLane<String, Integer> shoppingCart = this.<String, Integer>mapLane()
+      .didUpdate((key, newValue, oldValue) -> {
+        logMessage(key + " count changed to " + newValue + " from " + oldValue);
+      })
+      .didRemove((key, oldValue) -> {
+        logMessage("removed <" + key + "," + oldValue + ">");
+      });
 
   private void logMessage(Object msg) {
     System.out.println(nodeUri() + ": " + msg);
