@@ -14,6 +14,6 @@ This project can be built into a Docker image as follows:
 
 $ docker image ls
 REPOSITORY                       TAG                 IMAGE ID            CREATED             SIZE
-org.swimos/swim-docker-example   1.1                 17d69579cdf8        1 second ago        342MB
+org.swimos/swim-docker-example   1.2                 17d69579cdf8        1 second ago        342MB
 ```
 
