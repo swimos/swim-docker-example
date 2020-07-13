@@ -23,6 +23,10 @@ import java.time.ZonedDateTime;
 
 public class UnitAgent extends AbstractAgent {
 
+  @SwimLane("id")
+  ValueLane<Integer> id = this.<Integer>valueLane()
+      .didSet((newValue, oldValue) -> logMessage(ZonedDateTime.now() + ": `id` set to {" + newValue + "} from {" + oldValue + "}"));
+
   @SwimLane("info")
   ValueLane<String> info = this.<String>valueLane()
       .didSet((newValue, oldValue) -> logMessage(ZonedDateTime.now() + ": `info` set to {" + newValue + "} from {" + oldValue + "}"));
