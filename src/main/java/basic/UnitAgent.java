@@ -44,6 +44,15 @@ public class UnitAgent extends AbstractAgent {
         logMessage("removed <" + key + "," + oldValue + ">");
       });
 
+  @SwimLane("integerMap")
+  MapLane<Integer, Integer> integerMap = this.<Integer, Integer>mapLane()
+      .didUpdate((key, newValue, oldValue) -> {
+        logMessage("key " + key + " count changed to " + newValue + " from " + oldValue);
+      })
+      .didRemove((key, oldValue) -> {
+        logMessage("removed <" + key + "," + oldValue + ">");
+      });
+
   private void logMessage(Object msg) {
     System.out.println(nodeUri() + ": " + msg);
   }
