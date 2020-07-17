@@ -14,6 +14,11 @@ This project can be built into a Docker image as follows:
 
 $ docker image ls
 REPOSITORY                       TAG                 IMAGE ID            CREATED             SIZE
-org.swimos/swim-docker-example   1.2                 17d69579cdf8        1 second ago        342MB
+org.swimos/swim-docker-example   1.3                 17d69579cdf8        1 second ago        342MB
 ```
 
+## Making a new release
+
+`git tag -a v1.x -m "Release v1.x"`
+
+Note: Only annotated tags are currently supported by the rust build so making a relese through the UI will not work!
