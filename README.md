@@ -19,6 +19,7 @@ org.swimos/swim-docker-example   1.3                 17d69579cdf8        1 secon
 
 ## Making a new release
 
-`git tag -a v1.x -m "Release v1.x"`
+1) `git tag -a v1.x -m "Release v1.x"`
+2) `git push --follow-tags`
 
 Note: Only annotated tags are currently supported by the rust build so making a relese through the UI will not work!
