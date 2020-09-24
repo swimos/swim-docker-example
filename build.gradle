@@ -1,3 +1,12 @@
+buildscript {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+    dependencies {
+        classpath 'com.netflix.nebula:gradle-ospackage-plugin:8.0.3'
+    }
+}
+
 plugins {
     id 'java'
     id 'application'
@@ -5,51 +14,49 @@ plugins {
     id 'com.bmuschko.docker-java-application' version '6.4.0'
 }
 
-repositories {
-    jcenter()
-}
-
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-
-version '1.3'
-mainClassName = 'basic.BasicPlane'
-
-group = 'org.swimos'
 idea.module.outputDir file("out/production/classes")
 
-apply from: 'gradle/docker.gradle'
+group = 'org.swimos'
+ext.swimVersion = '3.11.0-SNAPSHOT'
+mainClassName = 'basic.BasicPlane'
+ext.moduleName = 'basic'
+ext.compilerArgs = ['-Xlint:all']
 
-afterEvaluate {
-    compileJava {
-        options.compilerArgs = ['--module-path', classpath.asPath, '-Xlint:all']
-        classpath = files()
-        options.encoding = 'UTF-8'
-        source = sourceSets.main.allJava
-        sourceCompatibility = JavaVersion.VERSION_1_9
-        targetCompatibility = JavaVersion.VERSION_1_9
-    }
-}
-
-configurations.all {
-    exclude group: 'org.swimos', module: 'swim-ws'
-    exclude group: 'ai.swim', module: 'swim-ws'
+repositories {
+    mavenCentral()
+    maven { url 'https://swimos.bintray.com/maven/' }
+    maven { url 'https://packages.confluent.io/maven/' }
 }
 
 dependencies {
-    compile group: 'org.swimos', name: 'swim-api', version: '3.10.0'
-    compile group: 'org.swimos', name: 'swim-server', version: '3.10.0'
-    compile group: 'org.swimos', name: 'swim-client', version: '3.10.0'
-    compile group: 'org.swimos', name: 'swim-deflate', version: '3.9.1'
-    compile files('libs/swim-ws.jar')
+    implementation group: 'org.swimos', name: 'swim-api', version: swimVersion
+    implementation group: 'org.swimos', name: 'swim-client', version: swimVersion
+    implementation group: 'org.swimos', name: 'swim-server', version: swimVersion
 }
 
-
-docker {
-    javaApplication {
-        baseImage = 'openjdk:12-jdk-alpine'
-        ports = [9001]
-        jvmArgs = ['-Xms256m', '-Xmx2048m']
-        mainClassName = 'basic.BasicPlane'
+afterEvaluate {
+    configurations {
+        apiElements {
+            sourceCompatibility = JavaVersion.VERSION_1_8
+            targetCompatibility = JavaVersion.VERSION_1_8
+        }
     }
+
+    compileJava {
+        options.compilerArgs += compilerArgs
+        options.encoding = 'UTF-8'
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+        exclude '*module-info*'
+    }
+
+    docker {
+        javaApplication {
+            baseImage = 'openjdk:12-jdk-alpine'
+            ports = [9001]
+            jvmArgs = ['-Xms256m', '-Xmx2048m']
+            mainClassName = 'basic.BasicPlane'
+        }
+    }
+
 }
