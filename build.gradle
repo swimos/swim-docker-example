@@ -23,7 +23,6 @@ apply from: 'gradle/docker.gradle'
 afterEvaluate {
     compileJava {
         options.compilerArgs = ['--module-path', classpath.asPath, '-Xlint:all']
-        classpath = files()
         options.encoding = 'UTF-8'
         source = sourceSets.main.allJava
         sourceCompatibility = JavaVersion.VERSION_1_9
@@ -37,11 +36,11 @@ configurations.all {
 }
 
 dependencies {
-    compile group: 'org.swimos', name: 'swim-api', version: '3.10.0'
-    compile group: 'org.swimos', name: 'swim-server', version: '3.10.0'
-    compile group: 'org.swimos', name: 'swim-client', version: '3.10.0'
-    compile group: 'org.swimos', name: 'swim-deflate', version: '3.9.1'
-    compile files('libs/swim-ws.jar')
+    implementation group: 'org.swimos', name: 'swim-api', version: '3.10.0'
+    implementation group: 'org.swimos', name: 'swim-server', version: '3.10.0'
+    implementation group: 'org.swimos', name: 'swim-client', version: '3.10.0'
+    implementation group: 'org.swimos', name: 'swim-deflate', version: '3.9.1'
+    implementation files('libs/swim-ws.jar')
 }
 
 
